@@ -1,0 +1,30 @@
+name: Build React App and Deploy to Netlify Preview Environment
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Test and Build Artifact
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install Client
+      run: npm ci
+
+    - name: Test Client
+      run: npm test -- --passWithNoTests
+
+    - name: Build Client
+      run: npm run build
+      
+    - name: Deploy to Preview
+      run: netlify deploy --build --alias deploy-preview-${{ github.event.number }}
