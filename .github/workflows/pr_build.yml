@@ -26,5 +26,11 @@ jobs:
     - name: Build Client
       run: npm run build
       
+    - name: Netlify login
+      run: netlify login
+      
+    - name: Netlify init
+      run: netlify init
+      
     - name: Deploy to Preview
       run: netlify deploy --build --alias deploy-preview-${{ github.event.number }}
