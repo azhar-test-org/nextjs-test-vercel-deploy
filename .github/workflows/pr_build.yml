@@ -31,9 +31,9 @@ jobs:
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        DEPLOYMENT_ALIAS: ${{ github.ref }}
+        DEPLOYMENT_ALIAS: ${{ github.head_ref }}
       run: |
-        npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --alias my_test
+        npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
       
 #     - name: 🚀 Deploy to Netlify
 #       id: deploy-netlify
