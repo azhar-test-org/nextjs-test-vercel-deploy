@@ -32,12 +32,7 @@ jobs:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
       run: |
-        echo Building...
-        yarn build
-        echo Building finished
-        echo Deploying to netlify...
-        npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --alias deploy-preview-${{ github.event.number }}
-        echo Deploying finished! Now you the website has the new contentful post!
+        npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
       
 #     - name: 🚀 Deploy to Netlify
 #       id: deploy-netlify
