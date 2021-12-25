@@ -36,7 +36,7 @@ jobs:
         yarn build
         echo Building finished
         echo Deploying to netlify...
-        npx netlify-cli deploy --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --alias deploy-preview-${{ github.event.number }}
+        npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --alias deploy-preview-${{ github.event.number }}
         echo Deploying finished! Now you the website has the new contentful post!
       
 #     - name: 🚀 Deploy to Netlify
