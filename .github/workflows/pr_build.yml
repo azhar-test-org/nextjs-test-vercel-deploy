@@ -26,24 +26,37 @@ jobs:
     - name: Build Client
       run: npm run build
       
-    - name: 🚀 Deploy to Netlify
-      id: deploy-netlify
-      uses: netlify/actions/cli@master
+    # Task to build and deploy project to Netlify
+    - name: build-deploy
       env:
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-      with:
-        args: deploy -m 'v${{ steps.package-version.outputs.current-version}} ・ ${{ github.head_ref }}'
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      run: |
+        echo Building...
+        yarn build
+        echo Building finished
+        echo Deploying to netlify...
+        npx netlify-cli deploy --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --alias deploy-preview-${{ github.event.number }}
+        echo Deploying finished! Now you the website has the new contentful post!
+      
+#     - name: 🚀 Deploy to Netlify
+#       id: deploy-netlify
+#       uses: netlify/actions/cli@master
+#       env:
+#         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+#         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+#       with:
+#         args: deploy -m 'v${{ steps.package-version.outputs.current-version}} ・ ${{ github.head_ref }}'
         
     # Publish the inspect and preview link to the PR
-    - name: 👓 Netlify Preview URL
-      uses: unsplash/comment-on-pr@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        OUTPUT: "This pull request is being automatically deployed to Netlify.\n\n🔍 Inspect: ${{ steps.deploy-netlify.outputs.NETLIFY_LOGS_URL }}\n✅ Preview: ${{ steps.deploy-netlify.outputs.NETLIFY_URL }}"
-      with:
-        msg: ${{ env.OUTPUT }}
-        check_for_duplicate_msg: false
+#     - name: 👓 Netlify Preview URL
+#       uses: unsplash/comment-on-pr@master
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         OUTPUT: "This pull request is being automatically deployed to Netlify.\n\n🔍 Inspect: ${{ steps.deploy-netlify.outputs.NETLIFY_LOGS_URL }}\n✅ Preview: ${{ steps.deploy-netlify.outputs.NETLIFY_URL }}"
+#       with:
+#         msg: ${{ env.OUTPUT }}
+#         check_for_duplicate_msg: false
       
 #     - name: Netlify login
 #       run: netlify login
