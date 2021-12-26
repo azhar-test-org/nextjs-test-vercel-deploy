@@ -75,6 +75,6 @@ jobs:
       env:
         DEPLOYED_URL: steps.run_tests.outputs.deployed_url
       with:
-        comment-id: ${{ steps.fc.outputs.comment-id }}
+        comment-id: ${{ steps.find_comment.outputs.comment-id }}
         body: |
           🚀 Netlify Preview Deployment: ${{join(steps.run_tests.outputs.*, '\n')}}
