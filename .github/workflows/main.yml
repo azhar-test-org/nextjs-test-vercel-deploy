@@ -53,6 +53,13 @@ jobs:
           DEPLOYMENT_ALIAS: dev
         run: |
           npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --open --alias "$DEPLOYMENT_ALIAS"
+          
+  promote_to_stage:
+    name: Approval to Promote to Stage Env
+    environment: 
+      name: promote_to_stage
+    runs-on: ubuntu-latest
+    needs: deploy_to_dev
 
   deploy_to_stage:
     name: Promote to Stage Env
@@ -61,7 +68,7 @@ jobs:
       url: 'https://stage--modest-thompson-8f6521.netlify.app'
 
     runs-on: ubuntu-latest
-    needs: deploy_to_dev
+    needs: promote_to_stage
     steps:
       - uses: actions/checkout@v2
       
@@ -82,6 +89,12 @@ jobs:
         run: |
           npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --open --alias "$DEPLOYMENT_ALIAS"
 
+  promote_to_prod:
+    name: Approval to Promote to Production
+    environment: 
+      name: promote_to_prod
+    runs-on: ubuntu-latest
+    needs: deploy_to_stage
 
   deploy_to_prod:
     name: Promote to Production
@@ -90,7 +103,7 @@ jobs:
       url: 'https://modest-thompson-8f6521.netlify.app'
 
     runs-on: ubuntu-latest
-    needs: deploy_to_stage
+    needs: promote_to_prod
     steps:
       - uses: actions/checkout@v2
       
