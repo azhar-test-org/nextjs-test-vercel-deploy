@@ -63,18 +63,21 @@ jobs:
       if: steps.find_comment.outputs.comment-id == ''
       uses: peter-evans/create-or-update-comment@v1
       env:
-        DEPLOYED_URL: steps.run_tests.outputs.deployed_url
+        DEPLOYED_URL: ${{ steps.run_tests.outputs.deployed_url }}
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
-          🚀 Netlify Preview Deployment: ${{join(steps.run_tests.outputs.*, '\n')}}
+          🚀 Netlify Preview Deployment:
+          ${{ steps.run_tests.outputs.deployed_url }}
 
     - name: Update comment
       if: steps.find_comment.outputs.comment-id != ''
       uses: peter-evans/create-or-update-comment@v1
       env:
-        DEPLOYED_URL: steps.run_tests.outputs.deployed_url
+        DEPLOYED_URL: ${{ steps.run_tests.outputs.deployed_url }}
       with:
         comment-id: ${{ steps.find_comment.outputs.comment-id }}
         body: |
-          🚀 Netlify Preview Deployment: ${{join(steps.run_tests.outputs.*, '\n')}}
+          🚀 Netlify Preview Deployment:
+          ${{ steps.run_tests.outputs.deployed_url }}
+        edit-mode: replace
