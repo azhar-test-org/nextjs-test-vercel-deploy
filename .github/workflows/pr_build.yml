@@ -26,6 +26,13 @@ jobs:
     - name: Build Client
       run: npm run build
       
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        name: build
+        path: .next
+        retention-days: 1
+      
     # Task to build and deploy project to Netlify
     - name: build-deploy
       env:
@@ -34,7 +41,7 @@ jobs:
         # DEPLOYMENT_ALIAS: ${{ github.head_ref }}
 #         DEPLOYMENT_ALIAS: stage
       run: |
-        npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --open
+        npx netlify-cli deploy --dir .next --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --open
       
 #     - name: 🚀 Deploy to Netlify
 #       id: deploy-netlify
