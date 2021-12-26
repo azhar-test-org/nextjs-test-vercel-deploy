@@ -26,8 +26,7 @@ jobs:
     - name: Build Client
       run: npm run build
       
-    # Task to build and deploy project to Netlify
-    - name: build-deploy
+    - name: 🚀 Deploy to Netlify Preview Env
       id: run_tests
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
@@ -35,37 +34,19 @@ jobs:
         # DEPLOYMENT_ALIAS: ${{ github.head_ref }}
 #         DEPLOYMENT_ALIAS: stage
       run: |
-        echo "::set-output name=action_fruit::$(npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --open | grep -oP '(?<=Website Draft URL: ).*' | xargs)"
+        echo "::set-output name=deployed_url::$(npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --open | grep -oP '(?<=Website Draft URL: ).*' | xargs)"
 
-    - name : op
-      env:
-        MY: ${{join(steps.run_tests.outputs.*, '\n')}}
-      run: echo 'asd'
-      
-#     - name: 🚀 Deploy to Netlify
-#       id: deploy-netlify
-#       uses: netlify/actions/cli@master
-#       env:
-#         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-#         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-#       with:
-#         args: deploy -m 'v${{ steps.package-version.outputs.current-version}} ・ ${{ github.head_ref }}'
+    # - name : op
+    #   env:
+    #     MY: ${{join(steps.run_tests.outputs.*, '\n')}}
+    #   run: echo 'asd'
         
     # Publish the inspect and preview link to the PR
-#     - name: 👓 Netlify Preview URL
-#       uses: unsplash/comment-on-pr@master
-#       env:
-#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         OUTPUT: "This pull request is being automatically deployed to Netlify.\n\n🔍 Inspect: ${{ steps.deploy-netlify.outputs.NETLIFY_LOGS_URL }}\n✅ Preview: ${{ steps.deploy-netlify.outputs.NETLIFY_URL }}"
-#       with:
-#         msg: ${{ env.OUTPUT }}
-#         check_for_duplicate_msg: false
-      
-#     - name: Netlify login
-#       run: netlify login
-      
-#     - name: Netlify init
-#       run: netlify init
-      
-#     - name: Deploy to Preview
-#       run: netlify deploy --build --alias deploy-preview-${{ github.event.number }}
+    - name: 👓 Netlify Preview URL
+      uses: unsplash/comment-on-pr@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        OUTPUT: "This pull request is being automatically deployed to Netlify.\n\n🚀 Preview: ${{ steps.run_tests.outputs.deployed_url }}"
+      with:
+        msg: ${{ env.OUTPUT }}
+        check_for_duplicate_msg: false
