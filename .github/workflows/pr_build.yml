@@ -28,21 +28,19 @@ jobs:
       
     # Task to build and deploy project to Netlify
     - name: build-deploy
-      uses: actions/github-script@v5
-      id: set-result
+      id: run_tests
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         # DEPLOYMENT_ALIAS: ${{ github.head_ref }}
 #         DEPLOYMENT_ALIAS: stage
-      # with:
-      #   script: npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --open
-      #   result-encoding: string
       run: |
-        npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --open | grep -oP '(?<=Website Draft URL: ).*' | xargs
+        echo $(npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --open | grep -oP '(?<=Website Draft URL: ).*' | xargs)
 
     - name : op
-      run: echo "${{steps.set-result.outputs.result}}"
+      env:
+        MY: ${{join(steps.run_tests.outputs.*, '\n')}}
+      run: echo 'asd'
       
 #     - name: 🚀 Deploy to Netlify
 #       id: deploy-netlify
