@@ -26,14 +26,6 @@ jobs:
     - name: Build Client
       run: npm run build
 
-    - name: Deploy to Dev
-      env:
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        DEPLOYMENT_ALIAS: dev
-      run: |
-        npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --open --alias "$DEPLOYMENT_ALIAS"
-
   deploy_to_dev:
     name: Deploy To Dev Env
     environment: 
@@ -44,6 +36,15 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v2
+      
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install Client
+        run: npm ci
 
       - name: Deploy to Netlify Dev Env
         env:
@@ -63,6 +64,15 @@ jobs:
     needs: deploy_to_dev
     steps:
       - uses: actions/checkout@v2
+      
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install Client
+        run: npm ci
 
       - name: Deploy to Netlify Stage Env
         env:
@@ -83,6 +93,15 @@ jobs:
     needs: deploy_to_stage
     steps:
       - uses: actions/checkout@v2
+      
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install Client
+        run: npm ci
 
       - name: Deploy to Netlify Prod Env
         env:
