@@ -16,9 +16,12 @@ jobs:
       id: cacheStep
       with:
         node-version: ${{ matrix.node-version }}
-#         cache: 'npm'
+        cache: 'npm'
 
     - name: Install Client
+      env:
+        D: ${{steps.cacheStep.outputs.cache-hit}}
+        A: steps.cacheStep.outputs.cache-hit
       if: steps.cacheStep.outputs.cache-hit != 'true'
       run: npm i
 
