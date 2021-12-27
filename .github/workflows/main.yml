@@ -18,7 +18,7 @@ jobs:
         cache: 'npm'
 
     - name: Install Client
-      run: npm ci
+      run: npm i
 
     - name: Test Client
       run: npm test -- --passWithNoTests
@@ -44,7 +44,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Client
-        run: npm ci
+        run: npm i
 
       - name: Deploy to Netlify Dev Env
         env:
@@ -82,7 +82,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Client
-        run: npm ci
+        run: npm i
 
       - name: Deploy to Netlify Stage Env
         env:
@@ -120,7 +120,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Client
-        run: npm ci
+        run: npm i
 
       - name: Deploy to Netlify Prod Env
         env:
