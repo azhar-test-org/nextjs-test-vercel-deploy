@@ -34,7 +34,7 @@ jobs:
         # DEPLOYMENT_ALIAS: ${{ github.head_ref }}
 #         DEPLOYMENT_ALIAS: stage
       run: |
-        echo "::set-output name=deployed_url::$(npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --open | grep -oP '(?<=Website Draft URL: ).*' | xargs)"
+        echo "::set-output name=deployed_url::$(npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --open | grep -oP '(?<=Website Draft URL: ).*')"
 
     # - name : op
     #   env:
