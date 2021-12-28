@@ -38,3 +38,12 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+
+# Sentry
+.sentryclirc
+
+# Sentry
+.sentryclirc
+
+# Sentry
+.sentryclirc
