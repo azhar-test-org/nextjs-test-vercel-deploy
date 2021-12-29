@@ -61,7 +61,7 @@ jobs:
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
           SENTRY_URL: ${{ secrets.SENTRY_URL }}
-          ENV_NAME: dev
+          NEXT_PUBLIC_ENVIRONMENT: dev
         run: |
           npx netlify-cli deploy --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" --open --alias "$DEPLOYMENT_ALIAS"
           
