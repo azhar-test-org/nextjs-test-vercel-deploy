@@ -11,9 +11,11 @@ Sentry.init({
   beforeSend(event) {
     const logRocketSession = LogRocket.sessionURL;
     if (logRocketSession !== null) {
+      console.log(`2. sessionURL = ${sessionURL}`);
       event.extra["LogRocket"] = logRocketSession;
       return event;
     } else {
+      console.log(`3. sessionURL = ${sessionURL}`);
       return event;
     }
   },
@@ -33,6 +35,7 @@ LogRocket.init("lhcjho/test-project");
 
 LogRocket.getSessionURL((sessionURL) => {
   Sentry.configureScope((scope) => {
+    console.log(`1. sessionURL = ${sessionURL}`);
     scope.setExtra("sessionURL", sessionURL);
   });
 });
