@@ -11,11 +11,11 @@ Sentry.init({
   beforeSend(event) {
     const logRocketSession = LogRocket.sessionURL;
     if (logRocketSession !== null) {
-      console.log(`2. sessionURL = ${sessionURL}`);
+      console.log(`2. sessionURL = ${logRocketSession}`);
       event.extra["LogRocket"] = logRocketSession;
       return event;
     } else {
-      console.log(`3. sessionURL = ${sessionURL}`);
+      console.log(`3. sessionURL = ${logRocketSession}`);
       return event;
     }
   },
